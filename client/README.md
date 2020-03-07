@@ -1,3 +1,6 @@
+## User Management System
+
+This project is to show case full stack development of user management system using React and Node.js.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
