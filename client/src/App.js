@@ -21,27 +21,24 @@ const styles = theme => ({
   }
 })
 
-const customers = [{
-  'id': 1,
-  'image': 'https://placeimg.com/64/64/1',
-  'name': 'Louis',
-  'job': 'Software Developer'
-},
-{
-  'id': 2,
-  'image': "https://placeimg.com/64/64/2",
-  'name': 'Thomas',
-  'job': 'Graphic Designer'
-},
-{
-  'id': 3,
-  'image': "https://placeimg.com/64/64/3",
-  'name': 'Emily',
-  'job': 'Business Analyst'
-}
-]
-class App extends React.Component {
 
+class App extends React.Component {
+  
+  state = {
+    customers: ""
+  }
+
+  componentDidMount() {
+    this.callApi().then(res => this.setState({
+      customers: res
+    })).catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const res = await fetch('/api/customers');
+    const body = await res.json();
+    return body;
+  }
   render() {
     // const classes = this.props.classes
     const { classes } = this.props;
@@ -57,7 +54,10 @@ class App extends React.Component {
              </TableRow>
            </TableHead>
            <TableBody>
-              { customers.map(c => {
+              {/* since I am calling calllAPI() asynchronously, when this line is first reached,
+              this.state.customers is empty. Thus, I am adding in this.state.customers ? to check
+              whether it is valid or not first to avoid the type error. */}
+              {this.state.customers ? this.state.customers.map(c => {
                 return (
                   <Customer
                   // A key to identify each element. Since I already have id which is unique for each person, I am using id as a key.
@@ -68,8 +68,8 @@ class App extends React.Component {
                   job = {c.job}
                   />
                 );
-              }) 
-            }
+              }) : ""}
+
             </TableBody>
           </Table> 
       </Paper>
