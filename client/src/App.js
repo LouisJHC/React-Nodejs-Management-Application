@@ -39,7 +39,7 @@ class App extends React.Component {
     this.timer = setInterval(this.progress, 20);
     this.callApi().then(res => this.setState({
       customers: res
-    })).catch(error => console.log(error));
+    })).catch(err => console.log(err));
   }
 
   callApi = async () => {
@@ -60,10 +60,12 @@ class App extends React.Component {
         <Table className={classes.table}>
            <TableHead>
              <TableRow>
-               <TableCell>id</TableCell>
-               <TableCell>image</TableCell>
-               <TableCell>name</TableCell>
-               <TableCell>job</TableCell>
+               <TableCell>Id</TableCell>
+               <TableCell>Image</TableCell>
+               <TableCell>Name</TableCell>
+               <TableCell>Gender</TableCell>
+               <TableCell>City</TableCell>
+               <TableCell>Job</TableCell>
              </TableRow>
            </TableHead>
            <TableBody>
@@ -78,12 +80,14 @@ class App extends React.Component {
                   id = {c.id}
                   image = {c.image}
                   name = {c.name}
+                  gender = {c.gender}
+                  city = {c.city}
                   job = {c.job}
                   />
                 );
               }) : 
               <TableRow>
-                <TableCell colSpan="6" align="center">
+                <TableCell colSpan="7" align="center">
                   {/* From material-ui website:
                       "Determinate circular indicators fill the invisible, circular track with color, as the indicator moves from 0 to 360 degrees.
                       Indeterminate circular indicators grow and shrink in size while moving along the invisible track." */}
