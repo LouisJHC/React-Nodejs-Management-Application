@@ -23,8 +23,8 @@ dbConnection.connect();
 app.get('/api/customers', (req, res) => {
     dbConnection.query(
       "SELECT * FROM CUSTOMER",
-      (err, rows, field) => {
-        res.send(rows);
+      (err, row, field) => {
+        res.send(row);
       }
     )
 })
