@@ -37,26 +37,35 @@ app.post('/api/customers', upload.single('image'), (req, res) => {
   let job = req.body.job;
   let params = [image, name, gender, city, job];
 
-  console.log(params);
+  dbConnection.query(sql, params, (err, row, field) => {
+    res.send(row);
+  });
+
+});
+
+
+dbConnection.connect();
+app.get('/api/customers', (req, res) => {
+    dbConnection.query(
+      'SELECT * FROM CUSTOMER WHERE isDeleted = 0',
+      (err, row, field) => {
+        res.send(row);
+      }
+    );
+});
+
+app.delete('/api/customers/:id', (req, res) => {
+  let sql = 'UPDATE CUSTOMER SET isDeleted = 1 WHERE id=?';
+  // req.params is for the route parameters, not the form data as in app.post where name = req.body.name for example.
+  let params = req.params.id;
 
   dbConnection.query(sql, params, (err, row, field) => {
     res.send(row);
   });
 
-
 });
-
-dbConnection.connect();
-app.get('/api/customers', (req, res) => {
-    dbConnection.query(
-      "SELECT * FROM CUSTOMER",
-      (err, row, field) => {
-        res.send(row);
-      }
-    )
-})
 
 app.listen(port, () => {
     // using ` instead of ' to print out the variable ${} inside the string.
     console.log(`Listening on port ${port}`);
-})
+});

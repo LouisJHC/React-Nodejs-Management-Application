@@ -84,6 +84,7 @@ class App extends React.Component {
                <TableCell>Gender</TableCell>
                <TableCell>City</TableCell>
                <TableCell>Job</TableCell>
+               <TableCell>Setting</TableCell>
              </TableRow>
            </TableHead>
            <TableBody>
@@ -101,6 +102,7 @@ class App extends React.Component {
                   gender = {c.gender}
                   city = {c.city}
                   job = {c.job}
+                  refresh = {this.refresh}
                   />
                 );
               }) : 
