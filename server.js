@@ -29,12 +29,15 @@ app.use('/image', express.static('./upload'));
 
 app.post('/api/customers', upload.single('image'), (req, res) => {
   let sql = "INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)";
-  let image = '/image' + req.file.filename;
-  let name = req.body.userName;
+  // the non-duplicated file name will be set by multer library.
+  let image = '/image/' + req.file.filename;
+  let name = req.body.name;
   let gender = req.body.gender;
   let city = req.body.city;
   let job = req.body.job;
   let params = [image, name, gender, city, job];
+
+  console.log(params);
 
   dbConnection.query(sql, params, (err, row, field) => {
     res.send(row);

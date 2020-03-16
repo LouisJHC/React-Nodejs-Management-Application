@@ -30,10 +30,26 @@ const styles = theme => ({
 
 class App extends React.Component {
   
-  state = {
-    customers: "",
-    // progress bar starts from 0.
-    completed: 0
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      customers: "",
+      // progress bar starts from 0.
+      completed: 0
+    }
+  }
+
+  refresh = () => {
+    this.setState({
+      customers: "",
+      completed: 0
+    })
+
+    this.callApi().then(res => this.setState({
+      customers: res
+    })).catch(err => console.log(err));
+    
   }
 
   componentDidMount() {
@@ -100,7 +116,7 @@ class App extends React.Component {
             </TableBody>
           </Table> 
       </Paper>
-      <AddCustomer />
+      <AddCustomer refresh = {this.refresh}/>
       </div>
     );
   }

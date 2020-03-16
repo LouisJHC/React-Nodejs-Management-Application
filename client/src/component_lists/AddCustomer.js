@@ -26,6 +26,7 @@ class AddCustomer extends React.Component {
     this.addCustomer()
     .then((response) => {
       console.log(response.data);
+      this.props.refresh();
     })
     this.setState({
         file: null,
@@ -35,6 +36,8 @@ class AddCustomer extends React.Component {
         city: "",
         job: ""
     })
+    // reloads the whole page
+    // window.location.reload();
   }
 
   handleFileChange(e) {
