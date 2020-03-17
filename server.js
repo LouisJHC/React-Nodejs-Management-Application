@@ -28,7 +28,7 @@ const upload = multer({
 app.use('/image', express.static('./upload'));
 
 app.post('/api/customers', upload.single('image'), (req, res) => {
-  let sql = "INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)";
+  let sql = "INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?, now(), 0)";
   // the non-duplicated file name will be set by multer library.
   let image = '/image/' + req.file.filename;
   let name = req.body.name;
