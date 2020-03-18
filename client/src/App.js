@@ -105,14 +105,16 @@ class App extends React.Component {
     this.state = {
       customers: "",
       // progress bar starts from 0.
-      completed: 0
+      completed: 0,
+      searchKeyword: ""
     }
   }
 
   refresh = () => {
     this.setState({
       customers: "",
-      completed: 0
+      completed: 0,
+      searchKeyword: ""
     })
 
     this.callApi().then(res => this.setState({
@@ -138,7 +140,24 @@ class App extends React.Component {
     const { completed } = this.state;
     this.setState({completed: completed >= 100 ? 0 : completed + 1});
   }
+
+  handleValueChange = (e) => {
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
+  }
   render() {
+
+    const filterComponents = (data) => {
+      data = data.filter((d) => {
+        return d.name.indexOf(this.state.searchKeyword) > -1;
+      })
+      return data.map((c) => {
+        return <Customer refresh={this.refresh} key={c.id} id={c.id} image={c.image} name={c.name} gender={c.gender} city={c.city} job={c.job}/>
+      })
+    }
+
+
     // const classes = this.props.classes
     const { classes } = this.props;
     const list = ["Id", "Image", "Name", "Gender", "City", "Job", "Setting"];
@@ -163,6 +182,9 @@ class App extends React.Component {
                 root: classes.inputRoot,
                 input: classes.inputInput
               }}
+              name="searchKeyword"
+              value={this.state.searchKeyword}
+              onChange={this.handleValueChange}
             />
           </div>
         </Toolbar>
@@ -183,21 +205,8 @@ class App extends React.Component {
               {/* since I am calling calllAPI() asynchronously, when this line is first reached,
               this.state.customers is empty. Thus, I am adding in this.state.customers ? to check
               whether it is valid or not first to avoid the type error. */}
-              {this.state.customers ? this.state.customers.map(c => {
-                return (
-                  <Customer
-                  // A key to identify each element. Since I already have id which is unique for each person, I am using id as a key.
-                  key = {c.id}
-                  id = {c.id}
-                  image = {c.image}
-                  name = {c.name}
-                  gender = {c.gender}
-                  city = {c.city}
-                  job = {c.job}
-                  refresh = {this.refresh}
-                  />
-                );
-              }) : 
+              {this.state.customers ? filterComponents(this.state.customers)
+              : 
               <TableRow>
                 <TableCell colSpan="7" align="center">
                   {/* From material-ui website:
